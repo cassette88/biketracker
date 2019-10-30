@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const Firestore = require('@google-cloud/firestore');
-
+require('dotenv').config()
 var app = express();
 
 // view engine setup
@@ -25,18 +25,31 @@ app.use('/users', usersRouter);
 
 
 const db = new Firestore({
-  projectId: 'spatial-climate-257521',
+  projectId: process.env.DB_HOST,
   keyFilename: './keyfile.json',
 });
 
-let docRef = db.collection('users').doc('alovelace');
+// let docRef = db.collection('users').doc('alovelace');
 
-let setAda = docRef.set({
-  first: 'Ada',
-  last: 'Lovelace',
-  born: 1815
-});
+// let setAda = docRef.set({
+//   first: 'Ada',
+//   last: 'Lovelace',
+//   born: 1815
+// });
   
+db.collection('users').get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data());
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  });
+  
+  
+
+
 
 
 app.get('/test', function (req, res){
@@ -52,7 +65,7 @@ app.get('/test', function (req, res){
     //  return zips
     // }
     res.json(zip);
-    console.log(json);
+    //console.log(json);
   }
 )
 })
