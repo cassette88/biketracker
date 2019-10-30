@@ -6,6 +6,7 @@ var logger = require('morgan');
 const fetch = require('node-fetch');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const Firestore = require('@google-cloud/firestore');
 
 var app = express();
 
@@ -23,13 +24,34 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
+const db = new Firestore({
+  projectId: 'spatial-climate-257521',
+  keyFilename: './keyfile.json',
+});
+
+let docRef = db.collection('users').doc('alovelace');
+
+let setAda = docRef.set({
+  first: 'Ada',
+  last: 'Lovelace',
+  born: 1815
+});
+  
+
+
 app.get('/test', function (req, res){
   fetch('https://dkw6qugbfeznv.cloudfront.net/')
 .then(function(res) {
   return res.json();}
 ).then(
   function(json){
-    res.json(json);
+    let zip = json.features[0].properties;
+  //  let zipped = json.features.forEach(myFunction);
+    // function myFunction(item, index){
+    //  let zips =  zipped.properties.item;
+    //  return zips
+    // }
+    res.json(zip);
     console.log(json);
   }
 )
