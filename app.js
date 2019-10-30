@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const fetch = require('node-fetch');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -22,6 +22,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
+app.get('/test', function (req, res){
+  fetch('https://dkw6qugbfeznv.cloudfront.net/')
+.then(function(res) {
+  return res.json();}
+).then(
+  function(json){
+    res.json(json);
+    console.log(json);
+  }
+)
+})
+  
+  
+
+app.get('/path', function (req, res) {
+  res.send("This page is functional");
+});
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -37,5 +57,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+
 
 module.exports = app;
