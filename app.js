@@ -71,7 +71,7 @@ function saveBikes() {
   // console.log("Your bike is saved")
 }
 // set interval to save to db every hour
-setInterval(saveBikes, 360000 )
+setInterval(saveBikes, 3600000 )
 
   db.collection('users').get()
   .then((snapshot) => {
@@ -92,7 +92,17 @@ setInterval(saveBikes, 360000 )
 //   born: 1815
 // });
 
-
+app.get('/bikes', function (req, res) {
+  db.collection('bikes').get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      res.json(doc.data());
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  }); 
+})
 
 app.get('/test', function (req, res){
   fetch('https://dkw6qugbfeznv.cloudfront.net/')
