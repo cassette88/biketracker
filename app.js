@@ -29,15 +29,51 @@ const db = new Firestore({
   keyFilename: './keyfile.json',
 });
 
-// let docRef = db.collection('users').doc('alovelace');
-
-// let setAda = docRef.set({
-//   first: 'Ada',
-//   last: 'Lovelace',
-//   born: 1815
-// });
+function saveBikes() {
   
-db.collection('users').get()
+    fetch('https://dkw6qugbfeznv.cloudfront.net/')
+  .then(function(res) {
+    return res.json();}  //examine this solved awaiting promise but is it correct?
+  ).then(
+    function(json){
+     // let zip = json.features[0].properties;
+     let bikestations = json.features
+     let zip = 
+     {
+      bikelist: bikestations
+     }
+     //res.json(zip);
+     let bike = Date.now()
+     let document = bike.toString();
+     let setDoc = db.collection('bikes').doc(document).set(zip);
+    //  let setBike = setDoc.set({
+    //   id: Date.now()
+    // })
+      //console.log(json);
+    }
+  ).catch((err) => {
+       console.log('Error saving documents', err);
+     });
+
+
+
+  db.collection('bikes').get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      console.log('**', doc.data());
+    });
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  });
+
+
+  // console.log("Your bike is saved")
+}
+// set interval to save to db every hour
+setInterval(saveBikes, 360000 )
+
+  db.collection('users').get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
       console.log(doc.id, '=>', doc.data());
@@ -48,7 +84,13 @@ db.collection('users').get()
   });
   
   
+// let docRef = db.collection('users').doc('alovelace');
 
+// let setAda = docRef.set({
+//   first: 'Ada',
+//   last: 'Lovelace',
+//   born: 1815
+// });
 
 
 
@@ -58,13 +100,8 @@ app.get('/test', function (req, res){
   return res.json();}
 ).then(
   function(json){
-    let zip = json.features[0].properties;
-  //  let zipped = json.features.forEach(myFunction);
-    // function myFunction(item, index){
-    //  let zips =  zipped.properties.item;
-    //  return zips
-    // }
-    res.json(zip);
+    let zip = json.features;
+   res.json(zip);
     //console.log(json);
   }
 )
