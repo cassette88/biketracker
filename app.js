@@ -60,7 +60,8 @@ function saveBikes() {
   db.collection('bikes').get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
-      console.log('**', doc.data());
+    //  console.log('**', doc.data());
+    console.log('Bikes saved to the db')
     });
   })
   .catch((err) => {
@@ -77,7 +78,8 @@ setInterval(saveBikes, 3600000 )
   .then((snapshot) => {
     snapshot.forEach((doc) => {
       console.log(doc.id, '=>', doc.data());
-    });
+       // console.log('Documents saved')
+  });
   })
   .catch((err) => {
     console.log('Error getting documents', err);
@@ -96,6 +98,7 @@ app.get('/bikes', function (req, res) {
   db.collection('bikes').get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
+      // fix this each doc is making a call // maybe get one i.e. the most recent
       res.json(doc.data());
     });
   })
