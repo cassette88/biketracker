@@ -95,16 +95,18 @@ setInterval(saveBikes, 3600000 )
 // });
 
 app.get('/bikes', function (req, res) {
-  db.collection('bikes').get()
-  .then((snapshot) => {
-    snapshot.forEach((doc) => {
-      // fix this each doc is making a call // maybe get one i.e. the most recent
+  let bikeRef = db.collection('bikes').doc('1572563149502')
+  let getDoc = bikeRef.get()
+  .then(doc => {
+    if (!doc.exists) {
+      res.send('No such document!');
+    } else {
       res.json(doc.data());
-    });
+    }
   })
-  .catch((err) => {
-    console.log('Error getting documents', err);
-  }); 
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
 })
 
 app.get('/test', function (req, res){
