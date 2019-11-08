@@ -100,8 +100,29 @@ app.get('/bikes', function (req, res) {
   .then(doc => {
     if (!doc.exists) {
       res.send('No such document!');
-    } else {
+    } else {  // call to weather api from here? doc.data for each..
+      
+      //http://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22
       res.json(doc.data());
+    }
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
+})
+
+app.get('/bikelist', function (req, res) {
+  let bikeRef = db.collection('bikes').doc('1572563149502')
+  let getDoc = bikeRef.get()
+  .then(doc => {
+    if (!doc.exists) {
+      res.send('No such document!');
+    } else {  // call to weather api from here? doc.data for each..
+      
+      //http://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22
+      //res.json(doc.data());
+      let bikes = doc.data();
+      res.render("bikelist", {bikes: bikes});
     }
   })
   .catch(err => {
@@ -150,3 +171,16 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+
+// .then(() => {
+//       snapshot.forEach((doc) => {
+//         // fix this each doc is making a call // maybe get one i.e. the most recent
+//         res.json(doc.data());
+//       });
+//     })
+//     .catch((err) => {
+//       console.log('Error getting documents', err);
+//     }); 
+  
