@@ -111,6 +111,17 @@ app.get('/bikes', function (req, res) {
   });
 })
 
+
+// SNAPSHOT OF ALL STATIONS AT A SPECIFIED TIME OR 404
+
+// /api/v1/stations?at=2017-11-01T11:00:00
+// {
+//   at: '2017-11-01:T11:00:01',
+//   stations: { /* As per the Indego API */ },
+//   weather: { /* as per the Open Weather Map API response for Philadelphia */ }
+// }
+
+
 app.get('/bikelist', function (req, res) {
   let bikeRef = db.collection('bikes').doc('1572563149502')
   let getDoc = bikeRef.get()
@@ -119,7 +130,7 @@ app.get('/bikelist', function (req, res) {
       res.send('No such document!');
     } else {  // call to weather api from here? doc.data for each..
       
-      //http://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22
+      //https://api.openweathermap.org/data/2.5/weather?lat=39.95&lon=-75.15&appid=6a4cd8549049be1f8125b7ac396dd3aa&units=imperial
       //res.json(doc.data());
       let bikes = doc.data();
       res.render("bikelist", {bikes: bikes});
