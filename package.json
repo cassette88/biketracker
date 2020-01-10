@@ -7,7 +7,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^2.5.0",
+    "@google-cloud/firestore": "^3.3.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
